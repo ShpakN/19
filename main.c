@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <intrin.h>
 #include <string.h>
+#include <conio.h>
 
 char squareMatrixColumns(FILE *f, FILE *g) {
     int n, **a, i, j;
@@ -292,6 +293,65 @@ char structuresInDescendingOfDegrees(FILE *f6, FILE *f62) {
 }
 
 
+char orderPositiveNegativeNumbers(FILE *f7) {
+    long n, i;
+    char *str, *buf;
+    double *mass = (double *) malloc(sizeof(double));
+
+    if (!(f7 = fopen("data.txt", "rb+")))
+        printf("ERROR ACCESS to READ [data.txt]\r\n");
+    else {
+        fseek(f7, 0, SEEK_END);
+        n = ftell(f7);
+        fseek(f7, 0, SEEK_SET);
+
+        if (!(str = (char *) malloc(n + 1)))
+            printf("ERROR ALLOCATION MEMORY\r\n");
+        else {
+            fread(str, 1, n, f7);
+            fclose(f7);
+            str[n] = '\0';
+            n = 0;
+            buf = strtok(str, " ,\n");
+
+            while (buf) {
+                mass[n] = atof(buf);
+                buf = strtok(NULL, " ,\n");
+                mass = (double *) realloc((void *) mass, (1 + (n = n + 1)) * sizeof(double));
+            }
+
+            free(str);
+            if (!(f7 = fopen("data.txt", "w")))
+                printf("ERROR ACCESS to WRITE [data.txt]\r\n");
+            else {
+                for (i = 0; i < n; i++) {
+
+                    if (mass[i] < 0) {
+                        fprintf(f7, "%.3f ", mass[i]);
+                        printf("%.3f ", mass[i]);
+                    }
+                }
+
+                for (i = 0; i < n; i++) {
+
+                    if (0 <= mass[i]) {
+                        fprintf(f7, "%.3f ", mass[i]);
+                        printf("%.3f ", mass[i]);
+                    }
+                }
+
+                printf("\r\nWRITING DATA IN [data.txt] DONE\r\n");
+            }
+        }
+
+        fclose(f7);
+    }
+
+    printf("Press any key to continue\r\n");
+
+    getch();
+}
+
 int main() {
     FILE *f1 = fopen("Строки матрицы.txt", "r");
     FILE *g1 = fopen("Столбцы матрицы.txt", "w");
@@ -304,6 +364,7 @@ int main() {
     FILE *f52 = fopen("самое длинное слово в строке.txt", "w");
     FILE *f6 = fopen("f6.txt", "r");
     FILE *f62 = fopen("outputf6", "w");
+    FILE *f7 = fopen("бинарный файл целых чисел.txt", "r");
 
     squareMatrixColumns(f1, g1);
     eachFloatingPointNumber(f2, g2);
@@ -311,6 +372,7 @@ int main() {
     sequenceOfCharacters(f4, f42);
     longestWordInString(f5, f52);
     structuresInDescendingOfDegrees(f6, f62);
+    orderPositiveNegativeNumbers(f7);
 
     return 0;
 }
