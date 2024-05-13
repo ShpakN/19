@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <intrin.h>
+#include <string.h>
 
 char squareMatrixColumns(FILE *f, FILE *g) {
     int n, **a, i, j;
@@ -167,16 +168,65 @@ char writingArithmeticExpression(FILE *f) {
 }
 
 
+char sequenceOfCharacters(FILE *fp, FILE *fp2) {
+    int N = 32;
+    char buffer[N];
+    int count = 0;
+    char *word = NULL;
+    if ((fp = fopen("text.txt", "r")) == NULL) {
+        printf("Error read file");
+        exit(0);
+    }
+
+
+    while (!feof(fp)) {
+        count = 0;
+        fgets(buffer, N, fp);
+
+        for (int i = 0; i < strlen(buffer); i++) {
+
+            if (buffer[i] != '\n') {
+                count++;
+            }
+            if (buffer[i] == '\n') {
+
+
+                word = (char *) malloc((count + 1) * sizeof(char));
+                for (int j = 0; j < count + 1; j++) {
+                    word[j] = buffer[(i - count) + j];
+
+                }
+                word[count] = '\0';
+
+                char *ptr = strchr(word, (int) fp2);
+                if (ptr == NULL) {
+                    puts(word);
+                } else continue;
+
+            }
+
+
+        }
+    }
+
+
+    fclose(fp);
+}
+
+
 int main() {
     FILE *f = fopen("Строки матрицы.txt", "r");
     FILE *g = fopen("Столбцы матрицы.txt", "w");
     FILE *f1 = fopen("Вещественные числа.txt", "r");
     FILE *g1 = fopen("Вещественные числа с плавающей запятой.txt", "w");
     FILE *f2 = fopen("c:\\in.txt", "r");
+    FILE *f3 = fopen("f3.txt", "r");
+    FILE *f32 = fopen("данная последовательность символов.txt", "r");
 
     squareMatrixColumns(f, g);
     eachFloatingPointNumber(f1, g1);
     writingArithmeticExpression(f2);
+    sequenceOfCharacters(f3, f32);
 
     return 0;
 }
