@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <intrin.h>
 
 char squareMatrixColumns(FILE *f, FILE *g) {
     int n, **a, i, j;
@@ -114,19 +115,68 @@ char eachFloatingPointNumber(FILE *f1, FILE *g1) {
     printf("OK!\n");
 }
 
-int main() {
-    FILE *f;
-    FILE *g;
-    FILE *f1;
-    FILE *g1;
 
-    f = fopen("Строки матрицы.txt", "r");
-    g = fopen("Столбцы матрицы.txt", "w");
-    f1 = fopen("Вещественные числа.txt", "r");
-    g1 = fopen("Вещественные числа с плавающей запятой.txt", "w");
+char writingArithmeticExpression(FILE *f) {
+    char s[6];
+    float a[6];
+    char o[3];
+    int i, k = 0;
+
+    fscanf(f, "%s", s);
+    fclose(f);
+
+    for (i = 0; i < strlen(s); i++) {
+        if (s[i] >= '0' && s[i] <= '9') {
+            a[i] = s[i] - '0';
+        } else {
+            k++;
+            o[k] = s[i];
+        }
+    }
+
+    for (i = 0; i < k; i++) {
+        switch (o[i]) {
+            case '*':
+                a[i * 2] = a[i * 2] * a[i * 2 + 1];
+                a[i * 2 + 1] = a[i * 2];
+                break;
+            case '/':
+                a[i * 2] = a[i * 2] / a[i * 2 + 1];
+                a[i * 2 + 1] = a[i * 2];
+                break;
+        }
+    }
+
+    for (i = 0; i < k; i++) {
+        switch (o[i]) {
+            case '+':
+                a[i * 2] = a[i * 2] + a[i * 2 + 1];
+                a[i * 2 + 1] = a[i * 2];
+                break;
+            case '-':
+                a[i * 2] = a[i * 2] - a[i * 2 + 1];
+                a[i * 2 + 1] = a[i * 2];
+                break;
+        }
+    }
+
+    f = fopen("c:\\in.txt", "a");
+    fprintf(f, "\n");
+    fprintf(f, "%.4f", a[2]);
+    fclose(f);
+}
+
+
+int main() {
+    FILE *f = fopen("Строки матрицы.txt", "r");
+    FILE *g = fopen("Столбцы матрицы.txt", "w");
+    FILE *f1 = fopen("Вещественные числа.txt", "r");
+    FILE *g1 = fopen("Вещественные числа с плавающей запятой.txt", "w");
+    FILE *f2 = fopen("c:\\in.txt", "r");
 
     squareMatrixColumns(f, g);
     eachFloatingPointNumber(f1, g1);
+    writingArithmeticExpression(f2);
 
     return 0;
 }
