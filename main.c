@@ -4,6 +4,8 @@
 #include <string.h>
 #include <conio.h>
 
+#define nq 3
+
 char squareMatrixColumns(FILE *f, FILE *g) {
     int n, **a, i, j;
 
@@ -352,6 +354,82 @@ char orderPositiveNegativeNumbers(FILE *f7) {
     getch();
 }
 
+typedef struct {
+    int data[nq][nq];
+} matrix;
+
+char binaryFileSquareMatrices(FILE *f8) {
+    matrix a;
+    int m = 4;
+    int n = 3;
+    int i, j, k, t;
+    for (k = 0; k < m; k++) {
+        printf("Матрица %d\n", k + 1);
+        for (i = 0; i < n; i++) {
+        }
+        fwrite(&a, sizeof(matrix), 1, f8);
+    }
+
+    rewind(f8);
+
+    for (k = 0; k < m; k++) {
+        fread(&a, sizeof(matrix), 1, f8);
+        printf("Матрица %d\n", k + 1);
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                printf("%4d", a.data[i][j]);
+            }
+            printf("\n");
+        }
+
+        t = 0;
+        i = 1;
+
+        while (i < n && t == 0) {
+            j = 0;
+            while (j < i && t == 0) {
+                if (a.data[i][j] != a.data[j][i]) {
+                    t = 1;
+                }
+                j++;
+            }
+            if (t == 0) {
+                i++;
+            }
+            if (t == 1) {
+                for (i = 1; i < n; i++) {
+                    for (j = 0; j < i; j++) {
+                        t = a.data[i][j];
+                        a.data[i][j] = a.data[j][i];
+                        a.data[j][i] = t;
+                    }
+                }
+                fseek(f8, k * sizeof(matrix), SEEK_SET);
+                fwrite(&a, sizeof(matrix), 1, f8);
+            }
+        }
+    }
+
+    printf("Содержание измененного файла\n");
+
+    rewind(f8);
+
+    for (k = 0; k < m; k++) {
+        fread(&a, sizeof(matrix), 1, f8);
+        printf("Матрица %d\n", k + 1);
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                printf("%4d", a.data[i][j]);
+            }
+            printf("\n");
+        }
+    }
+
+    fclose(f8);
+
+    return 0;
+}
+
 int main() {
     FILE *f1 = fopen("Строки матрицы.txt", "r");
     FILE *g1 = fopen("Столбцы матрицы.txt", "w");
@@ -365,6 +443,7 @@ int main() {
     FILE *f6 = fopen("f6.txt", "r");
     FILE *f62 = fopen("outputf6", "w");
     FILE *f7 = fopen("бинарный файл целых чисел.txt", "r");
+    FILE *f8 = fopen("f8.txt", "wb");
 
     squareMatrixColumns(f1, g1);
     eachFloatingPointNumber(f2, g2);
@@ -373,6 +452,7 @@ int main() {
     longestWordInString(f5, f52);
     structuresInDescendingOfDegrees(f6, f62);
     orderPositiveNegativeNumbers(f7);
+    binaryFileSquareMatrices(f8);
 
     return 0;
 }
