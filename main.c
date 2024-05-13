@@ -6,25 +6,20 @@
 char squareMatrixColumns(FILE *f, FILE *g) {
     int n, **a, i, j;
 
-    // Чтение матриц, и запись их по столбцам в новый файл
-
     while (!feof(f)) {
         fscanf(f, "%d", &n);
 
-        // Выделение памяти
         a = (int **) malloc(n * sizeof(int *));
         for (i = 0; i < n; i++) {
             a[i] = (int *) malloc(n * sizeof(int));
         }
 
-        // Чтение матрицы
         for (i = 0; i < n; i++) {
             for (j = 0; j < n; j++) {
                 fscanf(f, "%d", &a[i][j]);
             }
         }
 
-        // Запись транспонированой матрицы
         fprintf(g, "%d", n);
         for (j = 0; j < n; j++) {
             for (i = 0; i < n; i++) {
@@ -33,7 +28,6 @@ char squareMatrixColumns(FILE *f, FILE *g) {
         }
         fprintf(g, "\n");
 
-        // Освобождение памяти
         for (i = 0; i < n; i++) {
             free(a[i]);
         }
@@ -168,20 +162,20 @@ char writingArithmeticExpression(FILE *f) {
 }
 
 
-char sequenceOfCharacters(FILE *fp, FILE *fp2) {
+char sequenceOfCharacters(FILE *f4, FILE *f42) {
     int N = 32;
     char buffer[N];
     int count = 0;
     char *word = NULL;
-    if ((fp = fopen("text.txt", "r")) == NULL) {
+    if ((f4 = fopen("text.txt", "r")) == NULL) {
         printf("Error read file");
         exit(0);
     }
 
 
-    while (!feof(fp)) {
+    while (!feof(f4)) {
         count = 0;
-        fgets(buffer, N, fp);
+        fgets(buffer, N, f4);
 
         for (int i = 0; i < strlen(buffer); i++) {
 
@@ -198,7 +192,7 @@ char sequenceOfCharacters(FILE *fp, FILE *fp2) {
                 }
                 word[count] = '\0';
 
-                char *ptr = strchr(word, (int) fp2);
+                char *ptr = strchr(word, (int) f42);
                 if (ptr == NULL) {
                     puts(word);
                 } else continue;
@@ -210,23 +204,62 @@ char sequenceOfCharacters(FILE *fp, FILE *fp2) {
     }
 
 
-    fclose(fp);
+    fclose(f4);
+    fclose(f42);
 }
 
 
-int main() {
-    FILE *f = fopen("Строки матрицы.txt", "r");
-    FILE *g = fopen("Столбцы матрицы.txt", "w");
-    FILE *f1 = fopen("Вещественные числа.txt", "r");
-    FILE *g1 = fopen("Вещественные числа с плавающей запятой.txt", "w");
-    FILE *f2 = fopen("c:\\in.txt", "r");
-    FILE *f3 = fopen("f3.txt", "r");
-    FILE *f32 = fopen("данная последовательность символов.txt", "r");
+char longestWordInString(FILE *f5, FILE *f52) {
+    int MAXLINE = 1024;
+    char line[MAXLINE];
+    char* ptr;
+    char* p;
+    char* x;
+    int len = 0;
 
-    squareMatrixColumns(f, g);
-    eachFloatingPointNumber(f1, g1);
-    writingArithmeticExpression(f2);
-    sequenceOfCharacters(f3, f32);
+    if ((f52 == NULL) || (f5 == NULL)) {
+        printf("Error read file");
+        return 1;
+    }
+
+    while (!feof(f5)) {
+        len = 0;
+        if ((ptr = fgets(line, MAXLINE, f5)) == NULL)
+            break;
+
+        p = strtok(ptr, " ,.");
+        while (p != NULL) {
+            if (len < strlen(p)) {
+                len = strlen(p);
+                x = p;
+            }
+            p = strtok(NULL, " ,.");
+        }
+
+        fputs(x, f52);
+        if(x[len-1] != '\n')
+            fputc('\n', f52);
+    }
+    fclose(f5);
+    fclose(f52);
+}
+
+int main() {
+    FILE *f1 = fopen("Строки матрицы.txt", "r");
+    FILE *g1 = fopen("Столбцы матрицы.txt", "w");
+    FILE *f2 = fopen("Вещественные числа.txt", "r");
+    FILE *g2 = fopen("Вещественные числа с плавающей запятой.txt", "w");
+    FILE *f3 = fopen("c:\\in.txt", "r");
+    FILE *f4 = fopen("f4.txt", "r");
+    FILE *f42 = fopen("данная последовательность символов.txt", "w");
+    FILE *f5 = fopen("f5.txt", "r");
+    FILE *f52 = fopen("самое длинное слово в строке.txt", "w");
+
+    squareMatrixColumns(f1, g1);
+    eachFloatingPointNumber(f2, g2);
+    writingArithmeticExpression(f3);
+    sequenceOfCharacters(f4, f42);
+    longestWordInString(f5, f52);
 
     return 0;
 }
