@@ -410,8 +410,6 @@ char binaryFileSquareMatrices(FILE *f8) {
         }
     }
 
-    printf("Содержание измененного файла\n");
-
     rewind(f8);
 
     for (k = 0; k < m; k++) {
@@ -430,6 +428,52 @@ char binaryFileSquareMatrices(FILE *f8) {
     return 0;
 }
 
+
+char informationAboutTeamMembers(FILE *f9, int n) {
+    int N = 32;
+    char buffer[N];
+    int count = 0;
+    char *word = NULL;
+    if ((f9 = fopen("Информация о спортсменах.txt", "r")) == NULL) {
+        printf("Error read file");
+        exit(0);
+    }
+
+
+    while (!feof(f9)) {
+        count = 0;
+        fgets(buffer, N, f9);
+
+        for (int i = 0; i < strlen(buffer); i++) {
+
+            if (buffer[i] != '\n') {
+                count++;
+            }
+            if (buffer[i] == '\n') {
+
+
+                word = (char *) malloc((count + 1) * sizeof(char));
+                for (int j = 0; j < count + 1; j++) {
+                    word[j] = buffer[(i - count) + j];
+
+                }
+                word[count] = '\0';
+
+                char *ptr = strchr(word, n);
+                if (ptr != NULL) {
+                    (word)++;
+                } else continue;
+
+            }
+
+
+        }
+    }
+
+
+    fclose(f9);
+}
+
 int main() {
     FILE *f1 = fopen("Строки матрицы.txt", "r");
     FILE *g1 = fopen("Столбцы матрицы.txt", "w");
@@ -444,6 +488,7 @@ int main() {
     FILE *f62 = fopen("outputf6", "w");
     FILE *f7 = fopen("бинарный файл целых чисел.txt", "r");
     FILE *f8 = fopen("f8.txt", "wb");
+    FILE *f9 = fopen("Информация о спортсменах.txt", "wb");
 
     squareMatrixColumns(f1, g1);
     eachFloatingPointNumber(f2, g2);
@@ -453,6 +498,8 @@ int main() {
     structuresInDescendingOfDegrees(f6, f62);
     orderPositiveNegativeNumbers(f7);
     binaryFileSquareMatrices(f8);
+    informationAboutTeamMembers(f9, 5);
+
 
     return 0;
 }
