@@ -10,7 +10,6 @@ char squareMatrixColumns(FILE *f, FILE *g) {
     int n, **a, i, j;
 
     while (!feof(f)) {
-        fscanf(f, "%d", &n);
 
         a = (int **) malloc(n * sizeof(int *));
         for (i = 0; i < n; i++) {
@@ -19,7 +18,6 @@ char squareMatrixColumns(FILE *f, FILE *g) {
 
         for (i = 0; i < n; i++) {
             for (j = 0; j < n; j++) {
-                fscanf(f, "%d", &a[i][j]);
             }
         }
 
@@ -120,7 +118,7 @@ char writingArithmeticExpression(FILE *f) {
     char o[3];
     int i, k = 0;
 
-    fscanf(f, "%s", s);
+
     fclose(f);
 
     for (i = 0; i < strlen(s); i++) {
@@ -493,10 +491,6 @@ char releasedGoodsInAccordance(FILE *f10, FILE *f12, FILE *f13) {
     fclose(f10);
 
     for (i = 0; i < m; i++) {
-        printf("Write name: ");
-        scanf("%s", d.nameid);
-        printf("write k: ");
-        scanf("%d", &d.k);
         fseek(f12, j * sizeof(struct base), SEEK_SET);
         fwrite(&d, sizeof(struct base), 1, f12);
         j++;
