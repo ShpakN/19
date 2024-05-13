@@ -474,6 +474,78 @@ char informationAboutTeamMembers(FILE *f9, int n) {
     fclose(f9);
 }
 
+struct base {
+    char nameid[4];
+    int k;
+};
+
+char releasedGoodsInAccordance(FILE *f10, FILE *f12, FILE *f13) {
+    struct base s, d;
+    int i, j, l, n, m;
+    j = 0;
+    l = 0;
+
+    for (i = 0; i < n; i++) {
+        fseek(f10, l * sizeof(struct base), SEEK_SET);
+        fwrite(&s, sizeof(struct base), 1, f10);
+        l++;
+    }
+    fclose(f10);
+
+    for (i = 0; i < m; i++) {
+        printf("Write name: ");
+        scanf("%s", d.nameid);
+        printf("write k: ");
+        scanf("%d", &d.k);
+        fseek(f12, j * sizeof(struct base), SEEK_SET);
+        fwrite(&d, sizeof(struct base), 1, f12);
+        j++;
+    }
+    fclose(f12);
+
+    j = 0;
+    l = 0;
+
+    while (fread(&s, sizeof(struct base), 1, f10) == 1) {
+        l++;
+        while (fread(&d, sizeof(struct base), 1, f12) == 1) {
+            j++;
+            if (strcmp(s.nameid, d.nameid) == 0) {
+                if (s.k != d.k) {
+                    f13 = fopen("общая стоимость и количество.txt", "wb");
+                    d.k = d.k - s.k;
+                    fwrite(&d, sizeof(struct base), 1, f13);
+                    fclose(f13);
+                    fseek(f12, j * sizeof(struct base), SEEK_SET);
+                } else {
+                    fseek(f12, j * sizeof(struct base), SEEK_SET);
+                }
+            } else {
+                f13 = fopen("общая стоимость и количество.txt", "wb");
+                fwrite(&d, sizeof(struct base), 1, f13);
+                fclose(f13);
+                fseek(f12, j * sizeof(struct base), SEEK_SET);
+            }
+            fseek(f10, l * sizeof(struct base), SEEK_SET);
+        }
+    }
+
+    fclose(f12);
+    fclose(f10);
+
+    f13 = fopen("общая стоимость и количество.txt", "rb");
+
+    for (i = 0; i < m; i++) {
+        fread(&d, sizeof(struct base), 1, f13);
+        printf("%s\n", d.nameid);
+        printf("%d\n", d.k);
+    }
+
+    fclose(f13);
+
+    return 0;
+}
+
 int main() {
     FILE *f1 = fopen("Строки матрицы.txt", "r");
     FILE *g1 = fopen("Столбцы матрицы.txt", "w");
@@ -488,7 +560,10 @@ int main() {
     FILE *f62 = fopen("outputf6", "w");
     FILE *f7 = fopen("бинарный файл целых чисел.txt", "r");
     FILE *f8 = fopen("f8.txt", "wb");
-    FILE *f9 = fopen("Информация о спортсменах.txt", "wb");
+    FILE *f9 = fopen("Информация о спортсменах.txt", "r");
+    FILE *f10 = fopen("наименование товара.txt", "r");
+    FILE *f12 = fopen("цена единицы товара.txt", "r");
+    FILE *f13 = fopen("общая стоимость и количество.txt", "r");
 
     squareMatrixColumns(f1, g1);
     eachFloatingPointNumber(f2, g2);
@@ -499,6 +574,7 @@ int main() {
     orderPositiveNegativeNumbers(f7);
     binaryFileSquareMatrices(f8);
     informationAboutTeamMembers(f9, 5);
+    releasedGoodsInAccordance(f10, f12, f13);
 
 
     return 0;
