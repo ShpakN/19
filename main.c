@@ -212,9 +212,9 @@ char sequenceOfCharacters(FILE *f4, FILE *f42) {
 char longestWordInString(FILE *f5, FILE *f52) {
     int MAXLINE = 1024;
     char line[MAXLINE];
-    char* ptr;
-    char* p;
-    char* x;
+    char *ptr;
+    char *p;
+    char *x;
     int len = 0;
 
     if ((f52 == NULL) || (f5 == NULL)) {
@@ -237,12 +237,60 @@ char longestWordInString(FILE *f5, FILE *f52) {
         }
 
         fputs(x, f52);
-        if(x[len-1] != '\n')
+        if (x[len - 1] != '\n')
             fputc('\n', f52);
     }
     fclose(f5);
     fclose(f52);
 }
+
+
+char structuresInDescendingOfDegrees(FILE *f6, FILE *f62) {
+    int N = 32;
+    char buffer[N];
+    int count = 0;
+    char *word = NULL;
+    if ((f6 = fopen("text.txt", "r")) == NULL) {
+        printf("Error read file");
+        exit(0);
+    }
+
+
+    while (!feof(f6)) {
+        count = 0;
+        fgets(buffer, N, f6);
+
+        for (int i = 0; i < strlen(buffer); i++) {
+
+            if (buffer[i] != '\n') {
+                count++;
+            }
+            if (buffer[i] == '\n') {
+
+
+                word = (char *) malloc((count + 1) * sizeof(char));
+                for (int j = 0; j < count + 1; j++) {
+                    word[j] = buffer[(i - count) + j];
+
+                }
+                word[count] = '\0';
+
+                char *ptr = strchr(word, (int) f62);
+                if (ptr == NULL) {
+                    (word)--;
+                } else continue;
+
+            }
+
+
+        }
+    }
+
+
+    fclose(f6);
+    fclose(f62);
+}
+
 
 int main() {
     FILE *f1 = fopen("Строки матрицы.txt", "r");
@@ -254,12 +302,15 @@ int main() {
     FILE *f42 = fopen("данная последовательность символов.txt", "w");
     FILE *f5 = fopen("f5.txt", "r");
     FILE *f52 = fopen("самое длинное слово в строке.txt", "w");
+    FILE *f6 = fopen("f6.txt", "r");
+    FILE *f62 = fopen("outputf6", "w");
 
     squareMatrixColumns(f1, g1);
     eachFloatingPointNumber(f2, g2);
     writingArithmeticExpression(f3);
     sequenceOfCharacters(f4, f42);
     longestWordInString(f5, f52);
+    structuresInDescendingOfDegrees(f6, f62);
 
     return 0;
 }
