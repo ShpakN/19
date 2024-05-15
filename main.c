@@ -540,36 +540,83 @@ char releasedGoodsInAccordance(FILE *f10, FILE *f12, FILE *f13) {
     return 0;
 }
 
-int main() {
+void test_squareMatrixColumns() {
     FILE *f1 = fopen("Строки матрицы.txt", "r");
     FILE *g1 = fopen("Столбцы матрицы.txt", "w");
+    squareMatrixColumns(f1, g1);
+}
+
+
+void test_eachFloatingPointNumber() {
     FILE *f2 = fopen("Вещественные числа.txt", "r");
     FILE *g2 = fopen("Вещественные числа с плавающей запятой.txt", "w");
+    eachFloatingPointNumber(f2, g2);
+}
+
+void test_writingArithmeticExpression() {
     FILE *f3 = fopen("c:\\in.txt", "r");
+    writingArithmeticExpression(f3);
+}
+
+void test_sequenceOfCharacters() {
     FILE *f4 = fopen("f4.txt", "r");
     FILE *f42 = fopen("данная последовательность символов.txt", "w");
+    sequenceOfCharacters(f4, f42);
+}
+
+
+void test_longestWordInString() {
     FILE *f5 = fopen("f5.txt", "r");
     FILE *f52 = fopen("самое длинное слово в строке.txt", "w");
+    longestWordInString(f5, f52);
+}
+
+
+void test_structuresInDescendingOfDegrees() {
     FILE *f6 = fopen("f6.txt", "r");
     FILE *f62 = fopen("outputf6", "w");
+    structuresInDescendingOfDegrees(f6, f62);
+}
+
+
+void test_orderPositiveNegativeNumbers() {
     FILE *f7 = fopen("бинарный файл целых чисел.txt", "r");
+    orderPositiveNegativeNumbers(f7);
+}
+
+void test_binaryFileSquareMatrices() {
     FILE *f8 = fopen("f8.txt", "wb");
+    binaryFileSquareMatrices(f8);
+}
+
+void test_informationAboutTeamMembers() {
     FILE *f9 = fopen("Информация о спортсменах.txt", "r");
+    informationAboutTeamMembers(f9, 5);
+}
+
+void test_releasedGoodsInAccordance() {
     FILE *f10 = fopen("наименование товара.txt", "r");
     FILE *f12 = fopen("цена единицы товара.txt", "r");
     FILE *f13 = fopen("общая стоимость и количество.txt", "r");
-
-    squareMatrixColumns(f1, g1);
-    eachFloatingPointNumber(f2, g2);
-    writingArithmeticExpression(f3);
-    sequenceOfCharacters(f4, f42);
-    longestWordInString(f5, f52);
-    structuresInDescendingOfDegrees(f6, f62);
-    orderPositiveNegativeNumbers(f7);
-    binaryFileSquareMatrices(f8);
-    informationAboutTeamMembers(f9, 5);
     releasedGoodsInAccordance(f10, f12, f13);
+}
 
+void test() {
+    test_squareMatrixColumns();
+    test_eachFloatingPointNumber();
+    test_writingArithmeticExpression();
+    test_sequenceOfCharacters();
+    test_longestWordInString();
+    test_structuresInDescendingOfDegrees();
+    test_orderPositiveNegativeNumbers();
+    test_binaryFileSquareMatrices();
+    test_informationAboutTeamMembers();
+    test_releasedGoodsInAccordance();
+
+}
+
+int main() {
+    test();
 
     return 0;
 }
